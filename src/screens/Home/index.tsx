@@ -1,12 +1,8 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import TopBarNavigator from '../../Navigation/TopBarNavigator';
 
 const Component = () => {
-  return (
-    <View>
-      <Text>Home</Text>
-    </View>
-  );
+  return <TopBarNavigator />;
 };
 
 export {Component as Home};
