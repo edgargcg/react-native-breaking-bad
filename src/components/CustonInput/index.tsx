@@ -1,26 +1,19 @@
-import { placeholder } from '@babel/types';
-import React, { Dispatch, SetStateAction } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  KeyboardTypeOptions,
-  TextInput,
-} from 'react-native';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import { Input } from 'react-native-elements';
+
 import { colors } from '../../themes/BaseTheme';
 
-interface Props {
-  name: String;
+interface Props<T> {
   text: String;
+  name: keyof T;
   value?: string;
   placeholder: string;
-  type: KeyboardTypeOptions | undefined;
-  onChangeData: (key: String, text: String) => void;
+  onChangeData: (key: keyof T, value: string) => void;
 }
 
-const Component = (props: Props) => {
-  const { name, text, type, onChangeData, placeholder, value = '' } = props;
+const Component: any = <T extends Object>(props: Props<T>) => {
+  const { name, text, onChangeData, placeholder, value = '', ...rest } = props;
 
   return (
     <View style={styles.Container}>
@@ -28,10 +21,12 @@ const Component = (props: Props) => {
         label={text}
         value={value}
         maxLength={30}
-        keyboardType={type}
+        autoCorrect={false}
         style={styles.Input}
+        secureTextEntry={true}
         placeholder={placeholder}
         onChangeText={text => onChangeData(name, text)}
+        {...rest}
       />
     </View>
   );

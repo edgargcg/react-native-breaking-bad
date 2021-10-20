@@ -1,56 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Button, Text, View, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { colors } from '../../themes/BaseTheme/index';
+import { useForm } from '../../hooks/useForm';
 import { CustomInput } from '../../components';
+
+import { LoginInterface } from '../../interfaces/Interfaces';
+
+import { colors } from '../../themes/BaseTheme/index';
 
 interface Props extends NativeStackScreenProps<any, any> {}
 
 const Component = (props: Props) => {
   const { navigation } = props;
 
-  const [data, setData] = useState({
+  const { email, password, onChange } = useForm<LoginInterface>({
     email: '',
     password: '',
   });
 
   const doLogin = () => {
-    console.log('doLogin');
-    // navigation.navigate('Home');
+    if (!(email === 'edgar_campos@ucol.mx' && password === '123456')) return;
+
+    navigation.navigate('Home');
   };
-
-  const update = (key: String, value: String) => {
-    const newData = {
-      [`${key}`]: value,
-    };
-
-    setData({ ...data, ...newData });
-  };
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   return (
     <View style={styles.Container}>
       <Text style={styles.Title}>BreakingBad</Text>
       <View style={styles.Controls}>
         <CustomInput
-          name="email"
-          value={data.email}
+          name={'email'}
           placeholder=""
-          type="email-address"
-          onChangeData={update}
+          value={email as string}
+          onChangeData={onChange}
           text="Correo electrónico"
+          keyboardType="email-address"
         />
         <CustomInput
           name="password"
-          value={data.password}
-          placeholder=""
-          type="default"
-          onChangeData={update}
-          text="Correo electrónico"
+          text="Contraseña"
+          placeholder="******"
+          secureTextEntry={true}
+          onChangeData={onChange}
+          value={password as string}
         />
       </View>
       <Button onPress={doLogin} title="Sign In" />
@@ -75,7 +68,7 @@ const styles = StyleSheet.create({
   Controls: {
     display: 'flex',
     marginTop: 20,
-    width: '100%',
+    width: '80%',
   },
 });
 
