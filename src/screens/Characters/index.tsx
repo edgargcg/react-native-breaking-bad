@@ -1,13 +1,46 @@
-import React from 'react';
-import {Text, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
+
+import breakingBadApi from '../../api/breakingBadApi';
+import CharacterCard from '../../components/CharacterCard';
+
+import { CharacterInterface } from '../../interfaces/Interfaces';
+import { colors } from '../../themes/BaseTheme';
 
 const Component = () => {
-  return (
-    <View>
-      <Text>Characters</Text>
-    </View>
+  const [characters, setCharacters] = useState<[CharacterInterface] | null>(
+    null,
   );
+
+  const getCharacters = async () => {
+    const { data } = await breakingBadApi.get<[CharacterInterface]>(
+      '/characters',
+    );
+
+    setCharacters(data);
+  };
+
+  useEffect(() => {
+    getCharacters();
+  }, []);
+
+  const renderCharacters =
+    characters &&
+    characters.map((character, index) => {
+      return <CharacterCard key={`character-${index}`} character={character} />;
+    });
+
+  return <ScrollView style={styles.Container}>{renderCharacters}</ScrollView>;
 };
 
-export {Component as Characters};
+const styles = StyleSheet.create({
+  Container: {
+    backgroundColor: colors.primary,
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+  },
+});
+
+export { Component as Characters };
 export default Component;

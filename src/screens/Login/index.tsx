@@ -20,7 +20,7 @@ const Component = (props: Props) => {
   });
 
   const doLogin = () => {
-    if (!(email === 'edgar_campos@ucol.mx' && password === '123456')) return;
+    if (!(email === '1' && password === '1')) return;
 
     navigation.navigate('Home');
   };
