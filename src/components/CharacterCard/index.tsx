@@ -1,22 +1,27 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { CharacterInterface } from '../../interfaces/Interfaces';
-
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from 'react-native';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import { colors } from '../../themes/BaseTheme';
+import { CharacterInterface } from '../../interfaces/Interfaces';
 import { CharacterIcons } from '../../mock';
+
+import { colors } from '../../themes/BaseTheme';
 
 interface Props {
   character: CharacterInterface;
+  onClick: (character: CharacterInterface) => void;
 }
 
 const Component = (props: Props) => {
-  const {
-    character: { name, img, nickname, status },
-  } = props;
+  const { character, onClick } = props;
 
-  console.log(status);
+  const { name, img, nickname, status } = character;
 
   const characterIcon = CharacterIcons.filter(
     icon => icon.status === status,
@@ -33,23 +38,28 @@ const Component = (props: Props) => {
   );
 
   return (
-    <View style={styles.Container}>
-      <View style={styles.ImageContainer}>
-        <Image
-          style={styles.Image}
-          source={{
-            uri: img,
-          }}
-        />
-      </View>
-      <View style={styles.DataContainer}>
-        <View style={styles.Information}>
-          <Text style={styles.Name}>{name}</Text>
-          <Text style={styles.NickName}>{nickname}</Text>
+    <TouchableHighlight
+      style={styles.Container}
+      onPress={() => onClick(character)}
+    >
+      <>
+        <View style={styles.ImageContainer}>
+          <Image
+            style={styles.Image}
+            source={{
+              uri: img,
+            }}
+          />
         </View>
-        <View style={styles.EstatusContainer}>{renderIcon}</View>
-      </View>
-    </View>
+        <View style={styles.DataContainer}>
+          <View style={styles.Information}>
+            <Text style={styles.Name}>{name}</Text>
+            <Text style={styles.NickName}>{nickname}</Text>
+          </View>
+          <View style={styles.EstatusContainer}>{renderIcon}</View>
+        </View>
+      </>
+    </TouchableHighlight>
   );
 };
 

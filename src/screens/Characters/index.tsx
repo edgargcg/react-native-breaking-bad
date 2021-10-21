@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StyleSheet, ScrollView } from 'react-native';
 
 import breakingBadApi from '../../api/breakingBadApi';
 import CharacterCard from '../../components/CharacterCard';
@@ -7,7 +8,10 @@ import CharacterCard from '../../components/CharacterCard';
 import { CharacterInterface } from '../../interfaces/Interfaces';
 import { colors } from '../../themes/BaseTheme';
 
-const Component = () => {
+interface Props extends NativeStackScreenProps<any, any> {}
+
+const Component = (props: Props) => {
+  const { navigation } = props;
   const [characters, setCharacters] = useState<[CharacterInterface] | null>(
     null,
   );
@@ -20,6 +24,10 @@ const Component = () => {
     setCharacters(data);
   };
 
+  const onClickCharacter = (character: CharacterInterface) => {
+    navigation.navigate('CharacterProfile', character);
+  };
+
   useEffect(() => {
     getCharacters();
   }, []);
@@ -27,7 +35,13 @@ const Component = () => {
   const renderCharacters =
     characters &&
     characters.map((character, index) => {
-      return <CharacterCard key={`character-${index}`} character={character} />;
+      return (
+        <CharacterCard
+          key={`character-${index}`}
+          character={character}
+          onClick={onClickCharacter}
+        />
+      );
     });
 
   return <ScrollView style={styles.Container}>{renderCharacters}</ScrollView>;
