@@ -1,3 +1,5 @@
+import { IconName } from '@fortawesome/fontawesome-svg-core';
+
 export interface LoginInterface {
   email: String;
   password: String;
@@ -13,4 +15,10 @@ export interface CharacterInterface {
   appearence: [number];
   nickname: string;
   portrayed: string;
+}
+
+export interface CharacterIconInterface {
+  status: string;
+  icon: IconName;
+  color: string;
 }

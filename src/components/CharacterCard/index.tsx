@@ -2,7 +2,10 @@ import React from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { CharacterInterface } from '../../interfaces/Interfaces';
 
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+
 import { colors } from '../../themes/BaseTheme';
+import { CharacterIcons } from '../../mock';
 
 interface Props {
   character: CharacterInterface;
@@ -10,8 +13,24 @@ interface Props {
 
 const Component = (props: Props) => {
   const {
-    character: { name, img, nickname },
+    character: { name, img, nickname, status },
   } = props;
+
+  console.log(status);
+
+  const characterIcon = CharacterIcons.filter(
+    icon => icon.status === status,
+  )[0];
+
+  const renderIcon = (
+    <FontAwesomeIcon
+      size={20}
+      style={{
+        color: characterIcon.color,
+      }}
+      icon={['fas', characterIcon.icon]}
+    />
+  );
 
   return (
     <View style={styles.Container}>
@@ -28,9 +47,7 @@ const Component = (props: Props) => {
           <Text style={styles.Name}>{name}</Text>
           <Text style={styles.NickName}>{nickname}</Text>
         </View>
-        <View style={styles.EstatusContainer}>
-          <Text>3</Text>
-        </View>
+        <View style={styles.EstatusContainer}>{renderIcon}</View>
       </View>
     </View>
   );
